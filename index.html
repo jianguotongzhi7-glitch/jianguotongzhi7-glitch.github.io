@@ -1,651 +1,158 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> 保持理智 's  </title>
-    <meta name="keywords" content="保持理智,保持理智博客,保持理智's,保持理智bolg" />
-    <meta name="Description" content="睡不着的龙波切"/>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="img/icon.ico" type="image/x-icon">
-    <link rel="icon" href="img/icon.ico" type="image/x-icon">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            min-height: 100vh;
-            background: #2c3e50 center/cover no-repeat fixed;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-            position: relative;
-            transition: background-image 1s ease;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 0;
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            object-fit: cover;
-            transition: transform 0.3s ease;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-        }
-
-        .avatar:hover {
-            transform: scale(1.05);
-        }
-
-        .avatar-placeholder {
-            font-size: 60px;
-            color: white;
-        }
-
-        .name {
-            color: white;
-            font-size: 28px;
-            margin-top: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        .quote-box {
-            margin-top: 30px;
-            padding: 25px 40px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 500px;
-        }
-
-        .quote {
-            color: white;
-            font-size: 18px;
-            line-height: 1.8;
-            font-style: italic;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .social-icons {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .social-item {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .social-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .social-icon:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .social-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
-
-        .qrcode-popup {
-            position: absolute;
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%) scale(0);
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-
-        .social-item:hover .qrcode-popup {
-            transform: translateX(-50%) scale(1);
-            opacity: 1;
-        }
-
-        .qrcode-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .qrcode-box img {
-            width: 200px;
-            height: 200px;
-            display: block;
-            image-rendering: -webkit-optimize-contrast;
-        }
-
-        .qrcode-label {
-            color: #333;
-            font-size: 12px;
-            text-align: center;
-            margin-top: 8px;
-            white-space: nowrap;
-        }
-
-        .music-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 100;
-        }
-
-        .music-btn {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .music-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .music-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
-
-        .music-btn.playing {
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            animation: float 15s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-            .container {
-                padding: 20px;
-                width: 100%;
-            }
-
-            .avatar {
-                width: 120px;
-                height: 120px;
-            }
-
-            .avatar-placeholder {
-                font-size: 48px;
-            }
-
-            .name {
-                font-size: 22px;
-                margin-top: 15px;
-            }
-
-            .quote-box {
-                margin-top: 20px;
-                padding: 20px 25px;
-                max-width: 90%;
-            }
-
-            .quote {
-                font-size: 15px;
-                line-height: 1.7;
-            }
-
-            .social-icons {
-                margin-top: 30px;
-                gap: 20px;
-            }
-
-            .social-icon {
-                width: 45px;
-                height: 45px;
-            }
-
-            .social-icon svg {
-                width: 20px;
-                height: 20px;
-            }
-
-            .qrcode-popup {
-                top: 55px;
-            }
-
-            .qrcode-box {
-                padding: 10px;
-            }
-
-            .qrcode-box img {
-                width: 180px;
-                height: 180px;
-            }
-
-            .qrcode-label {
-                font-size: 11px;
-            }
-
-            .music-control {
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .music-btn {
-                width: 45px;
-                height: 45px;
-            }
-
-            .music-btn svg {
-                width: 20px;
-                height: 20px;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-
-            .avatar {
-                width: 100px;
-                height: 100px;
-                border-width: 3px;
-            }
-
-            .avatar-placeholder {
-                font-size: 40px;
-            }
-
-            .name {
-                font-size: 18px;
-                margin-top: 12px;
-                letter-spacing: 1px;
-            }
-
-            .quote-box {
-                margin-top: 15px;
-                padding: 15px 20px;
-            }
-
-            .quote {
-                font-size: 14px;
-                line-height: 1.6;
-            }
-
-            .social-icons {
-                margin-top: 25px;
-                gap: 15px;
-            }
-
-            .social-icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            .social-icon svg {
-                width: 18px;
-                height: 18px;
-            }
-
-            .qrcode-popup {
-                top: 50px;
-            }
-
-            .qrcode-box {
-                padding: 8px;
-            }
-
-            .qrcode-box img {
-                width: 160px;
-                height: 160px;
-            }
-
-            .qrcode-label {
-                font-size: 10px;
-                margin-top: 5px;
-            }
-
-            .music-control {
-                bottom: 15px;
-                right: 15px;
-            }
-
-            .music-btn {
-                width: 40px;
-                height: 40px;
-            }
-
-            .music-btn svg {
-                width: 18px;
-                height: 18px;
-            }
-
-            .particle {
-                width: 3px;
-                height: 3px;
-            }
-        }
-
-        .social-item.active .qrcode-popup {
-            transform: translateX(-50%) scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* 自动播放提示层 */
-        .play-hint {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            transition: opacity 0.5s ease;
-        }
-
-        .play-hint.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保持理智's</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8C%99</text></svg>">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','PingFang SC','STSong','SimSun',sans-serif;background:#0a0a15;color:#8888aa;overflow:hidden;height:100vh;width:100vw}
+.bg{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#0a0a15 0%,#151525 50%,#0a0a15 100%);z-index:-2}
+.rain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;overflow:hidden}
+.drop{position:absolute;width:1px;height:60px;background:linear-gradient(to bottom,transparent,rgba(100,100,180,0.3));animation:fall linear infinite}
+@keyframes fall{from{transform:translateY(-60px)}to{transform:translateY(100vh)}}
+.start-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,21,0.95);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:1000;cursor:pointer;transition:opacity 0.8s ease}
+.start-overlay.hidden{opacity:0;pointer-events:none}
+.start-text{font-size:16px;letter-spacing:3px;color:#444466;margin-bottom:20px;animation:breathe 3s ease-in-out infinite;font-weight:300}
+.start-hint{font-size:14px;color:#555577;letter-spacing:2px}
+@keyframes breathe{0%,100%{opacity:0.5}50%{opacity:1}}
+.main-container{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;padding:20px}
+.avatar-wrap{width:120px;height:120px;border-radius:50%;overflow:hidden;margin-bottom:30px;box-shadow:0 0 40px rgba(100,100,180,0.15);cursor:pointer;transition:transform .5s cubic-bezier(.4,0,.2,1),box-shadow .4s;animation:breathe 4s ease-in-out infinite}
+.avatar-wrap:hover{transform:scale(1.15) rotate(8deg);box-shadow:0 0 60px rgba(100,100,180,0.25)}
+.avatar-wrap:active{transform:scale(0.92) rotate(-5deg);transition:transform .15s}
+#mainAvatar{width:100%;height:100%;object-fit:cover}
+.title{font-size:28px;letter-spacing:6px;margin-bottom:15px;color:#777799;text-shadow:0 0 15px rgba(100,100,180,0.2);font-weight:300}
+.subtitle{font-size:16px;color:#666688;line-height:1.8;text-align:center;letter-spacing:2px;margin-bottom:30px}
+.quote{font-size:13px;color:#666688;font-style:italic;text-align:center;max-width:600px;line-height:1.6;letter-spacing:1px;font-weight:300}
+.music-widget{position:fixed;right:80px;bottom:24px;display:flex;align-items:center;gap:10px;background:rgba(20,20,35,0.85);backdrop-filter:blur(10px);padding:10px 16px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,0.4);border:1px solid rgba(100,100,180,0.15);z-index:100}
+.m-play,.m-next,.m-vol{background:none;border:none;color:#8888aa;font-size:18px;cursor:pointer;padding:5px;transition:all 0.3s;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.m-play:hover,.m-next:hover,.m-vol:hover{color:#aaaacc;background:rgba(100,100,180,0.15)}
+.m-song{font-size:12px;color:#666688;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:1px}
+.tree-hole{position:fixed;right:18px;bottom:24px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:100}
+.tree-hole-icon{width:50px;height:50px;background:radial-gradient(circle at 30% 30%,#2a2a45,#151525);border-radius:50%;box-shadow:0 0 30px rgba(100,100,180,0.2),inset 0 0 20px rgba(0,0,0,0.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:24px;transition:all 0.4s}
+.tree-hole-icon:hover{transform:scale(1.1);box-shadow:0 0 40px rgba(100,100,180,0.3)}
+.tree-hole-icon.spinning{animation:spin 8s linear infinite}
+.tree-hole-label{font-size:11px;color:#555577;letter-spacing:2px;font-weight:300}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.panel{position:fixed;top:0;right:-420px;width:400px;height:100%;background:rgba(10,10,20,0.95);backdrop-filter:blur(20px);box-shadow:-10px 0 40px rgba(0,0,0,0.6);transition:right 0.5s cubic-bezier(.4,0,.2,1);z-index:200;padding:40px 30px;overflow-y:auto;border-left:1px solid rgba(100,100,180,0.1)}
+.panel.open{right:0}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px;padding-bottom:20px;border-bottom:1px solid rgba(100,100,180,0.15)}
+.panel-title{font-size:20px;letter-spacing:5px;color:#8888aa;font-weight:300}
+.close-btn{background:none;border:none;color:#555577;font-size:32px;cursor:pointer;transition:all 0.3s;line-height:1;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.close-btn:hover{color:#aaaacc;background:rgba(100,100,180,0.1);transform:rotate(90deg)}
+.form-group{margin-bottom:25px}
+.form-label{display:block;font-size:12px;color:#666688;margin-bottom:10px;letter-spacing:2px;font-weight:300}
+.form-input{width:100%;padding:14px;background:rgba(20,20,40,0.5);border:1px solid rgba(100,100,180,0.12);border-radius:10px;color:#8888aa;font-size:13px;outline:none;transition:all 0.3s;font-family:inherit}
+.form-input:focus{border-color:rgba(100,100,180,0.3);background:rgba(25,25,45,0.6);box-shadow:0 0 12px rgba(100,100,180,0.08)}
+textarea.form-input{min-height:130px;resize:vertical;line-height:1.6}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#222240,#151530);border:1px solid rgba(100,100,180,0.2);border-radius:10px;color:#777799;font-size:14px;letter-spacing:4px;cursor:pointer;transition:all 0.3s;margin-top:15px;font-family:inherit;font-weight:300}
+.submit-btn:hover{background:linear-gradient(135deg,#2a2a4a,#1a1a35);box-shadow:0 0 20px rgba(100,100,180,0.15);transform:translateY(-2px)}
+.message-list{margin-top:35px}
+.message-item{background:rgba(20,20,40,0.5);border:1px solid rgba(100,100,180,0.08);border-radius:12px;padding:18px;margin-bottom:18px;animation:msgIn 0.4s ease;transition:all 0.3s}
+.message-item:hover{background:rgba(25,25,45,0.6);border-color:rgba(100,100,180,0.15);transform:translateX(5px)}
+@keyframes msgIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.msg-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.msg-avatar{font-size:26px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:rgba(35,35,60,0.7);border-radius:50%;box-shadow:0 0 10px rgba(100,100,180,0.1)}
+.msg-info{flex:1}
+.msg-nick{font-size:13px;color:#8888aa;font-weight:400;letter-spacing:1px}
+.msg-time{font-size:10px;color:#555577;margin-top:3px}
+.msg-text{font-size:13px;color:#777799;line-height:1.7;word-break:break-word;padding-left:56px;font-weight:300}
+.empty-msg{text-align:center;color:#555577;padding:40px 20px;font-size:13px;letter-spacing:1px;font-weight:300}
+.admin-badge{position:fixed;top:20px;right:20px;background:rgba(255,50,50,0.2);border:1px solid rgba(255,50,50,0.3);padding:8px 15px;border-radius:20px;font-size:12px;color:#ff6666;letter-spacing:2px;display:none;z-index:150}
+.admin-badge.show{display:block}
+.admin-controls{display:flex;gap:10px;margin-top:10px}
+.admin-btn{flex:1;padding:8px;background:rgba(40,40,60,0.6);border:1px solid rgba(100,100,180,0.2);border-radius:6px;color:#8888aa;font-size:12px;cursor:pointer;transition:all 0.3s}
+.admin-btn:hover{background:rgba(50,50,70,0.8);color:#aaaacc}
+.admin-btn.approve{border-color:rgba(100,200,100,0.3);color:#66aa66}
+.admin-btn.approve:hover{background:rgba(100,200,100,0.1)}
+.admin-btn.reject{border-color:rgba(200,100,100,0.3);color:#aa6666}
+.admin-btn.reject:hover{background:rgba(200,100,100,0.1)}
+.pending-badge{display:inline-block;background:rgba(255,200,50,0.2);border:1px solid rgba(255,200,50,0.3);padding:3px 8px;border-radius:12px;font-size:10px;color:#ffcc66;margin-left:8px}
+.tip{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,15,30,0.95);border:1px solid rgba(100,100,180,0.25);padding:20px 40px;border-radius:10px;color:#777799;font-size:13px;letter-spacing:2px;z-index:300;animation:tipIn 0.3s ease;box-shadow:0 0 25px rgba(0,0,0,0.5);font-weight:300}
+@keyframes tipIn{from{opacity:0;transform:translate(-50%,-50%) scale(0.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+</style>
 </head>
 <body>
-    <div id="playHint" class="play-hint" onclick="startAudio()">
-        加载中...
-    </div>
-    <div class="particles" id="particles"></div>
-    
-    <audio id="bgMusic" autoplay preload="auto">
-        <source src="" type="audio/mpeg">
-    </audio>
-
-    <div class="container">
-        <div class="avatar">
-            <img src="img/g" alt="g" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-        </div>
-        <h1 class="name"></h1>
-        
-        <div class="quote-box">
-            <p class="quote" id="quote">加载中...</p>
-        </div>
-
-        <div class="social-icons">
-            <div class="social-item">
-                <div class="social-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.269-.03-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
-                    </svg>
-                </div>
-                <div class="qrcode-popup">
-                    <div class="qrcode-box">
-                        <img src="img/WeChat.png" alt="微信二维码">
-                        <p class="qrcode-label"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="music-control">
-        <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
-            <svg id="playIcon" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-            <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-            </svg>
-        </button>
-    </div>
-
-    <script>
-        const fallbackQuotes = [
-            "生活不是等待风暴过去，而是学会在雨中翩翩起舞。",
-            "世界上只有一种真正的英雄主义，那就是认清生活的真相后依然热爱生活。",
-            "不要因为走得太远，而忘记为什么出发。",
-            "人生就像骑自行车，要保持平衡就得不断前进。",
-            "你若盛开，清风自来。"
-        ];
-
-        const backgroundApis = [
-            'https://api.eyabc.cn/api/picture/scenery',
-            'https://api.btstu.cn/sjbz/api.php?lx=fengjing',
-            'https://api.paugram.com/wallpaper/',
-            'https://bing.img.run/rand_uhd.php'
-        ];
-
-        const musicList = [
-            'music/bgm.mp3',
-            'music/bgm2.mp3',
-            'music/bgm3.mp3'
-        ];
-
-        const bgMusic = document.getElementById('bgMusic');
-        const musicBtn = document.getElementById('musicBtn');
-        const playIcon = document.getElementById('playIcon');
-        const pauseIcon = document.getElementById('pauseIcon');
-        let isPlaying = false;
-
-        function setRandomBackground() {
-            const randomIndex = Math.floor(Math.random() * backgroundApis.length);
-            const timestamp = new Date().getTime();
-            const apiUrl = backgroundApis[randomIndex];
-            if (apiUrl.includes('?')) {
-                document.body.style.backgroundImage = `url('${apiUrl}&t=${timestamp}')`;
-            } else {
-                document.body.style.backgroundImage = `url('${apiUrl}?t=${timestamp}')`;
-            }
-        }
-
-        function setRandomMusic() {
-            const randomIndex = Math.floor(Math.random() * musicList.length);
-            bgMusic.src = musicList[randomIndex];
-            bgMusic.load();
-            // 尝试播放
-            bgMusic.play().then(() => {
-                isPlaying = true;
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                musicBtn.classList.add('playing');
-                document.getElementById('playHint').classList.add('hidden');
-            }).catch(e => {
-                console.log('自动播放需要用户交互');
-                document.getElementById('playHint').classList.remove('hidden');
-            });
-        }
-
-        setRandomBackground();
-        setRandomMusic();
-
-        async function fetchQuote() {
-            const quoteEl = document.getElementById('quote');
-            quoteEl.textContent = '加载中...';
-
-            try {
-                const response = await fetch('https://v1.hitokoto.cn?c=i&c=d&c=k');
-                const data = await response.json();
-                quoteEl.textContent = '"' + data.hitokoto + '"';
-            } catch (error) {
-                console.log('API请求失败，使用备用名言');
-                const fallback = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
-                quoteEl.textContent = '"' + fallback + '"';
-            }
-        }
-
-        fetchQuote();
-
-        bgMusic.onended = function() {
-            setRandomMusic();
-            bgMusic.play();
-        };
-
-        function toggleMusic() {
-            if (isPlaying) {
-                bgMusic.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-                musicBtn.classList.remove('playing');
-            } else {
-                bgMusic.play();
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                musicBtn.classList.add('playing');
-            }
-            isPlaying = !isPlaying;
-        }
-
-        function startAudio() {
-            if (!isPlaying) {
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    playIcon.style.display = 'none';
-                    pauseIcon.style.display = 'block';
-                    musicBtn.classList.add('playing');
-                    document.getElementById('playHint').classList.add('hidden');
-                }).catch(function(error) {
-                    console.log('自动播放被浏览器阻止，请点击播放按钮');
-                    document.getElementById('playHint').classList.remove('hidden');
-                });
-            } else {
-                document.getElementById('playHint').classList.add('hidden');
-            }
-            // 播放后移除监听
-            ['click', 'touchstart', 'mousedown', 'keydown', 'scroll'].forEach(event => {
-                document.removeEventListener(event, startAudio);
-            });
-        }
-
-        ['click', 'touchstart', 'mousedown', 'keydown', 'scroll'].forEach(event => {
-            document.addEventListener(event, startAudio, { once: true });
-        });
-
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = window.innerWidth <= 480 ? 15 : 30;
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        createParticles();
-
-        const socialItems = document.querySelectorAll('.social-item');
-        socialItems.forEach(item => {
-            item.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                const isActive = this.classList.contains('active');
-                socialItems.forEach(i => i.classList.remove('active'));
-                if (!isActive) {
-                    this.classList.add('active');
-                }
-            });
-        });
-
-        document.addEventListener('touchstart', function(e) {
-            if (!e.target.closest('.social-item')) {
-                socialItems.forEach(item => item.classList.remove('active'));
-            }
-        });
-    </script>
-    <script src="https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0/dist/autoload.js"></script>
+<div class="bg"></div>
+<div class="rain" id="rainContainer"></div>
+<div class="start-overlay" id="startOverlay">
+  <div class="start-text">点击任意处 · 开始</div>
+  <div class="start-hint"></div>
+</div>
+<div class="bg"></div>
+<div class="main-container">
+  <div class="avatar-wrap">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect fill='%23151525' width='120' height='120'/%3E%3Ccircle cx='60' cy='45' r='20' fill='%23353555'/%3E%3Cellipse cx='60' cy='95' rx='32' ry='25' fill='%23353555'/%3E%3Ctext x='60' y='50' text-anchor='middle' font-size='28' fill='%23FFD700'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E" alt="avatar" id="mainAvatar">
+  </div>
+  <div class="title">保持理智</div>
+  <div class="quote" id="quoteText">"每个人心里都有一棵倒下的树"</div>
+</div>
+<div class="music-widget">
+  <button class="m-play" id="playBtn">▶</button>
+  <span class="m-song" id="songName">未播放</span>
+  <button class="m-next" id="nextBtn">⏭</button>
+  <button class="m-vol" id="volIcon">🔊</button>
+</div>
+<div class="tree-hole" id="treeHole">
+  <div class="tree-hole-icon">🕳️</div>
+  <div class="tree-hole-label">树洞</div>
+</div>
+<div class="panel" id="messagePanel">
+  <div class="panel-header">
+    <div class="panel-title">树洞留言</div>
+    <button class="close-btn" id="closePanel">×</button>
+  </div>
+  <div class="form-group">
+    <label class="form-label">你的昵称 *</label>
+    <input type="text" class="form-input" id="nickInput" placeholder="请输入昵称" maxlength="20">
+  </div>
+  <div class="form-group">
+    <label class="form-label">想说的话</label>
+    <textarea class="form-input" id="textInput" placeholder="把心事留给风..." maxlength="500"></textarea>
+  </div>
+  <button class="submit-btn" id="submitBtn">投入树洞</button>
+  <div class="message-list" id="messageList">
+    <div class="empty-msg">加载中...</div>
+  </div>
+</div>
+<div class="admin-badge" id="adminBadge">管理员模式</div>
+<audio id="audioPlayer" preload="auto"></audio>
+<script>
+(function(){
+const SONGS=[{name:'这个世界会好吗 (2016 unplugged)',src:'music/这个世界会好吗 (2016 unplugged).mp3'},{name:'热河 (2016 unplugged)',src:'music/热河 (2016 unplugged).mp3'},{name:'妈妈2013版LIVE',src:'music/妈妈2013版LIVE.mp3'},{name:'你离开了南京 从此没有人和我说话',src:'music/你离开了南京 从此没有人和我说话.mp3'},{name:'山阴路的夏天 (2016 unplugged)',src:'music/山阴路的夏天 (2016 unplugged).mp3'}];
+const SYSTEM_AVATARS=['🌙','🌊','🌧️','🦋','️','🌸','☁️','🍃','🌿','','','🌑','💧','','🍂',''];
+const QUOTES=['"每个人心里都有一棵倒下的树"','"沉默是最深的呐喊"','"我们在黑暗中寻找光"','"孤独是自由的另一种名字"','"有些话，只适合说给风听"','"所有的告别，都是为了重逢"','"深夜的风，吹不散心事"','"我们都是被遗忘在时光里的回声"','"雨下整夜，我的爱溢出就像雨水"','"天青色等烟雨，而我在等你"','"最美的不是下雨天，是曾与你躲过雨的屋檐"','"故事的小黄花，从出生那年就飘着"','"从前从前，有个人爱你很久"','"我一路向北，离开有你的季节"','"风筝在阴天搁浅，想念还在等待救援"','"也许时间是一种解药，也是我现在正服下的毒药"','"翻着我们的照片，想念若隐若现"','"你出现在我诗的每一页"','"我想就这样牵着你的手不放开"','"能不能给我一首歌的时间"','"为你弹奏肖邦的夜曲，纪念我死去的爱情"','"我送你离开，千里之外，你无声黑白"','"繁华如三千东流水，我只取一瓢爱了解"','"谁在用琵琶弹奏一曲东风破"','"缘分落地生根是我们"','"天真在这条路上，跌跌撞撞，然后茅塞顿开"','"我用漂亮的押韵，形容被掠夺一空的爱情"','"如果邪恶是华丽残酷的乐章，它的终章我会亲手写上"','"看不见你的笑，我怎么睡得着"','"想回到过去，试着抱你在怀里"','"我们的感情蔓延珍藏拥吻着飞扬"','"青春像一场大雨，即使感冒了，还盼望回头再淋它一次"','"那些痛的记忆，落在春的泥土里"','"最美的不是下雨天，而是与你一起躲过雨的屋檐"','"原来你是我最想留住的幸运"','"后来，我总算学会了如何去爱"','"可惜你早已远去，消失在人海"','"有些人一旦错过就不再"','"栀子花白花瓣，落在我蓝色百褶裙上"','"你都如何回忆我，带着笑或是很沉默"','"永远不会忘记我们站在一起的那个夏天"','"那个夏天，蝉鸣声声，阳光正好"','"青春是一本太仓促的书"','"我们笑着流泪，却不知为何而哭"','"时间会冲淡一切，但有些记忆永远抹不去"','"黑夜给了我黑色的眼睛，我却用它寻找光明"','"人生若只如初见，何事秋风悲画扇"'];
+const _v='xQ9mP2qR7vT3nM8j';
+const _h='1a3267a7b391ef499e0d612271819087f0a5ff072ec8c7888c97f31383db0779';
+const _bin='6a70341ef5f4af5e29e3b4aa';
+const _key='$2a$10$dPDqRz.3B/hquPeYPolzKuJbt9R95Mestu83/kVs6vofgmmoHyoyO';
+const _burl='https://api.jsonbin.io/v3/b/'+_bin;
+let _a=false,_s=0,_p=false,_k=[],_cache={messages:[],pending:[]};
+const $=id=>document.getElementById(id);
+const rainContainer=$('rainContainer'),startOverlay=$('startOverlay'),playBtn=$('playBtn'),songName=$('songName'),nextBtn=$('nextBtn'),volIcon=$('volIcon'),treeHole=$('treeHole'),messagePanel=$('messagePanel'),closePanel=$('closePanel'),nickInput=$('nickInput'),textInput=$('textInput'),submitBtn=$('submitBtn'),messageList=$('messageList'),adminBadge=$('adminBadge'),audio=$('audioPlayer'),quoteText=$('quoteText');
+for(let i=0;i<50;i++){const d=document.createElement('div');d.className='drop';d.style.left=Math.random()*100+'%';d.style.animationDuration=(Math.random()*2+1)+'s';d.style.animationDelay=Math.random()*2+'s';rainContainer.appendChild(d);}
+startOverlay.addEventListener('click',()=>{startOverlay.classList.add('hidden');if(!_p){_ls(Math.floor(Math.random()*SONGS.length));audio.volume=0.4;audio.play().then(()=>{_p=true;playBtn.textContent='';treeHole.querySelector('.tree-hole-icon').classList.add('spinning');}).catch(e=>console.log('播放失败:',e));}});
+function _ls(i){_s=i;audio.src=SONGS[_s].src;songName.textContent=SONGS[_s].name;}
+playBtn.addEventListener('click',()=>{if(_p){audio.pause();playBtn.textContent='▶';treeHole.querySelector('.tree-hole-icon').classList.remove('spinning');}else{audio.play();playBtn.textContent='';treeHole.querySelector('.tree-hole-icon').classList.add('spinning');}_p=!_p;});
+nextBtn.addEventListener('click',()=>{_ls((_s+1)%SONGS.length);if(_p)audio.play();});
+volIcon.addEventListener('click',()=>{audio.muted=!audio.muted;volIcon.textContent=audio.muted?'🔇':'';});
+audio.addEventListener('ended',()=>{_ls((_s+1)%SONGS.length);if(_p)audio.play();});
+treeHole.addEventListener('click',()=>{messagePanel.classList.add('open');_rm();});
+closePanel.addEventListener('click',()=>{messagePanel.classList.remove('open');});
+async function _fetch(){try{const r=await fetch(_burl+'/latest',{headers:{'X-Master-Key':_key}});if(!r.ok)throw new Error(r.status);const j=await r.json();_cache=j.record||{messages:[],pending:[]};}catch(e){messageList.innerHTML='<div class="empty-msg">留言加载失败，请检查网络或JSONBin配置</div>';_cache={messages:[],pending:[]};}}
+async function _save(){if(_bin==='YOUR_BIN_ID')return;try{await fetch(_burl,{method:'PUT',headers:{'X-Master-Key':_key,'Content-Type':'application/json'},body:JSON.stringify(_cache)});}catch(e){_tip('保存失败，请检查网络');}}
+function _rm(){if(!_a){const msgs=_cache.messages;if(msgs.length===0){messageList.innerHTML='<div class="empty-msg">还没有人留下痕迹...</div>';return;}messageList.innerHTML=msgs.map(m=>`<div class="message-item"><div class="msg-header"><div class="msg-avatar">${m.avatar}</div><div class="msg-info"><div class="msg-nick">${m.nick}</div><div class="msg-time">${m.time}</div></div></div><div class="msg-text">${m.text}</div></div>`).join('');}else{const all=[..._cache.pending.map(m=>({...m,isPending:true})),..._cache.messages];if(all.length===0){messageList.innerHTML='<div class="empty-msg">暂无留言</div>';return;}messageList.innerHTML=all.map((m,i)=>`<div class="message-item"><div class="msg-header"><div class="msg-avatar">${m.avatar}</div><div class="msg-info"><div class="msg-nick">${m.nick}${m.isPending?'<span class="pending-badge">待审核</span>':''}</div><div class="msg-time">${m.time}</div></div></div><div class="msg-text">${m.text}</div>${m.isPending?`<div class="admin-controls"><button class="admin-btn approve" onclick="window._ap(${i})">通过</button><button class="admin-btn reject" onclick="window._rj(${i})">拒绝</button></div>`:''}</div>`).join('');}}
+submitBtn.addEventListener('click',async()=>{const nick=nickInput.value.trim();const text=textInput.value.trim();if(!nick){_tip('请填写昵称');return;}if(!text){_tip('请写点什么吧');return;}const avatar=SYSTEM_AVATARS[Math.floor(Math.random()*SYSTEM_AVATARS.length)];const now=new Date();const time=`${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;_cache.pending.push({nick,text,avatar,time});await _save();nickInput.value='';textInput.value='';_tip('已投入树洞，等待审核');_rm();});
+treeHole.querySelector('.tree-hole-icon').addEventListener('click',()=>{messagePanel.classList.add('open');_rm();});
+document.addEventListener('keydown',e=>{if([123,112].includes(e.keyCode)||(e.ctrlKey&&e.shiftKey&&[73,74,67].includes(e.keyCode))||(e.ctrlKey&&e.keyCode===85)){e.preventDefault();e.stopPropagation();return;}if(e.altKey&&e.keyCode===115){e.preventDefault();return;}_k.push(e.keyCode);if(_k.length>10)_k.shift();const konami=[38,38,40,40,37,39,37,39,66,65];if(_k.length>=konami.length&&_k.slice(-konami.length).every((v,i)=>v===konami[i])){_k=[];if(!_a){const pwd=prompt('输入密码:');if(pwd){async function sha256(msg){const msgBuffer=new TextEncoder().encode(msg+_v);const hashBuffer=await crypto.subtle.digest('SHA-256',msgBuffer);const hashArray=Array.from(new Uint8Array(hashBuffer));const hashHex=hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');return hashHex;}sha256(pwd).then(hash=>{if(hash===_h){_a=true;adminBadge.classList.add('show');_tip('已进入管理模式');_rm();}else{_tip('密码错误');}});}}else{_a=false;adminBadge.classList.remove('show');_tip('已退出管理模式');_rm();}}});
+document.addEventListener('contextmenu',e=>e.preventDefault());
+window._ap=async i=>{const msg=_cache.pending.splice(i,1)[0];_cache.messages.unshift(msg);await _save();_tip('已通过');_rm();};
+window._rj=async i=>{_cache.pending.splice(i,1);await _save();_tip('已拒绝');_rm();};
+function _tip(t){const d=document.createElement('div');d.className='tip';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2000);}
+quoteText.textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+_fetch().then(()=>{_rm();});
+})();
+</script>
 </body>
 </html>
