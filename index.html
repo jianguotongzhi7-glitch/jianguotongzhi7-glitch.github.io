@@ -139,13 +139,22 @@ const VOL_OFF_PATH='M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-
 function _setPlayIcon(playing){playIcon.querySelector('path').setAttribute('d',playing?PAUSE_PATH:PLAY_PATH);}
 function _setVolIcon(muted){volSvg.querySelector('path').setAttribute('d',muted?VOL_OFF_PATH:VOL_ON_PATH);}
 async function _loadSongs(){
-  const r=await fetch('https://api.github.com/repos/jianguotongzhi7/jianguotongzhi7-glitch.github.io/contents/music');
+  // 使用 jsdelivr CDN 代理 GitHub API，国内可访问
+  const r=await fetch('https://cdn.jsdelivr.net/gh/jianguotongzhi7/jianguotongzhi7-glitch.github.io@main/music/');
   if(!r.ok)throw new Error(r.status);
-  const files=await r.json();
-  SONGS=files.filter(f=>f.name.toLowerCase().endsWith('.mp3')).map(f=>({
-    name:f.name.replace(/\.[^.]+$/,''),
-    src:'music/'+f.name
-  }));
+  // jsdelivr 目录页返回 HTML，需要解析文件名
+  const html=await r.text();
+  const matches=[...html.matchAll(/href="([^"]+\.mp3)"/gi)];
+  SONGS=matches.map(m=>{
+    const fname=decodeURIComponent(m[1].split('/').pop());
+    return {
+      name:fname.replace(/\.[^.]+$/,''),
+      src:'https://cdn.jsdelivr.net/gh/jianguotongzhi7/jianguotongzhi7-glitch.github.io@main/music/'+encodeURIComponent(fname)
+    };
+  });
+  // 去重（HTML 中可能有重复链接）
+  const seen=new Set();
+  SONGS=SONGS.filter(s=>{const k=s.src;return seen.has(k)?false:(seen.add(k),true);});
 }
 await _loadSongs();
 for(let i=0;i<50;i++){const d=document.createElement('div');d.className='drop';d.style.left=Math.random()*100+'%';d.style.animationDuration=(Math.random()*2+1)+'s';d.style.animationDelay=Math.random()*2+'s';rainContainer.appendChild(d);}
