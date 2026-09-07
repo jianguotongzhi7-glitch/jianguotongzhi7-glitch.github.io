@@ -26,8 +26,9 @@ body{font-family:'Microsoft YaHei','PingFang SC','STSong','SimSun',sans-serif;ba
 .subtitle{font-size:16px;color:#666688;line-height:1.8;text-align:center;letter-spacing:2px;margin-bottom:30px}
 .quote{font-size:13px;color:#666688;font-style:italic;text-align:center;max-width:600px;line-height:1.6;letter-spacing:1px;font-weight:300}
 .music-widget{position:fixed;right:80px;bottom:24px;display:flex;align-items:center;gap:10px;background:rgba(20,20,35,0.85);backdrop-filter:blur(10px);padding:10px 16px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,0.4);border:1px solid rgba(100,100,180,0.15);z-index:100}
-.m-play,.m-next,.m-vol{background:none;border:none;color:#8888aa;font-size:18px;cursor:pointer;padding:5px;transition:all 0.3s;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.m-play,.m-next,.m-vol{background:none;border:none;color:#8888aa;cursor:pointer;padding:5px;transition:all 0.3s;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
 .m-play:hover,.m-next:hover,.m-vol:hover{color:#aaaacc;background:rgba(100,100,180,0.15)}
+.m-play svg,.m-next svg,.m-vol svg{width:18px;height:18px;fill:currentColor}
 .m-song{font-size:12px;color:#666688;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:1px}
 .tree-hole{position:fixed;right:18px;bottom:24px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:100}
 .tree-hole-icon{width:50px;height:50px;background:radial-gradient(circle at 30% 30%,#2a2a45,#151525);border-radius:50%;box-shadow:0 0 30px rgba(100,100,180,0.2),inset 0 0 20px rgba(0,0,0,0.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:24px;transition:all 0.4s}
@@ -89,10 +90,10 @@ textarea.form-input{min-height:130px;resize:vertical;line-height:1.6}
   <div class="quote" id="quoteText">"每个人心里都有一棵倒下的树"</div>
 </div>
 <div class="music-widget">
-  <button class="m-play" id="playBtn">▶</button>
-  <span class="m-song" id="songName">未播放</span>
-  <button class="m-next" id="nextBtn">⏭</button>
-  <button class="m-vol" id="volIcon">🔊</button>
+  <button class="m-play" id="playBtn"><svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+  <span class="m-song" id="songName">加载中...</span>
+  <button class="m-next" id="nextBtn"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg></button>
+  <button class="m-vol" id="volIcon"><svg id="volSvg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></button>
 </div>
 <div class="tree-hole" id="treeHole">
   <div class="tree-hole-icon">🕳️</div>
@@ -119,8 +120,7 @@ textarea.form-input{min-height:130px;resize:vertical;line-height:1.6}
 <div class="admin-badge" id="adminBadge">管理员模式</div>
 <audio id="audioPlayer" preload="auto"></audio>
 <script>
-(function(){
-const SONGS=[{name:'这个世界会好吗 (2016 unplugged)',src:'music/这个世界会好吗 (2016 unplugged).mp3'},{name:'热河 (2016 unplugged)',src:'music/热河 (2016 unplugged).mp3'},{name:'妈妈2013版LIVE',src:'music/妈妈2013版LIVE.mp3'},{name:'你离开了南京 从此没有人和我说话',src:'music/你离开了南京 从此没有人和我说话.mp3'},{name:'山阴路的夏天 (2016 unplugged)',src:'music/山阴路的夏天 (2016 unplugged).mp3'}];
+(async function(){
 const SYSTEM_AVATARS=['🌙','🌊','🌧️','🦋','️','🌸','☁️','🍃','🌿','','','🌑','💧','','🍂',''];
 const QUOTES=['"每个人心里都有一棵倒下的树"','"沉默是最深的呐喊"','"我们在黑暗中寻找光"','"孤独是自由的另一种名字"','"有些话，只适合说给风听"','"所有的告别，都是为了重逢"','"深夜的风，吹不散心事"','"我们都是被遗忘在时光里的回声"','"雨下整夜，我的爱溢出就像雨水"','"天青色等烟雨，而我在等你"','"最美的不是下雨天，是曾与你躲过雨的屋檐"','"故事的小黄花，从出生那年就飘着"','"从前从前，有个人爱你很久"','"我一路向北，离开有你的季节"','"风筝在阴天搁浅，想念还在等待救援"','"也许时间是一种解药，也是我现在正服下的毒药"','"翻着我们的照片，想念若隐若现"','"你出现在我诗的每一页"','"我想就这样牵着你的手不放开"','"能不能给我一首歌的时间"','"为你弹奏肖邦的夜曲，纪念我死去的爱情"','"我送你离开，千里之外，你无声黑白"','"繁华如三千东流水，我只取一瓢爱了解"','"谁在用琵琶弹奏一曲东风破"','"缘分落地生根是我们"','"天真在这条路上，跌跌撞撞，然后茅塞顿开"','"我用漂亮的押韵，形容被掠夺一空的爱情"','"如果邪恶是华丽残酷的乐章，它的终章我会亲手写上"','"看不见你的笑，我怎么睡得着"','"想回到过去，试着抱你在怀里"','"我们的感情蔓延珍藏拥吻着飞扬"','"青春像一场大雨，即使感冒了，还盼望回头再淋它一次"','"那些痛的记忆，落在春的泥土里"','"最美的不是下雨天，而是与你一起躲过雨的屋檐"','"原来你是我最想留住的幸运"','"后来，我总算学会了如何去爱"','"可惜你早已远去，消失在人海"','"有些人一旦错过就不再"','"栀子花白花瓣，落在我蓝色百褶裙上"','"你都如何回忆我，带着笑或是很沉默"','"永远不会忘记我们站在一起的那个夏天"','"那个夏天，蝉鸣声声，阳光正好"','"青春是一本太仓促的书"','"我们笑着流泪，却不知为何而哭"','"时间会冲淡一切，但有些记忆永远抹不去"','"黑夜给了我黑色的眼睛，我却用它寻找光明"','"人生若只如初见，何事秋风悲画扇"'];
 const _v='xQ9mP2qR7vT3nM8j';
@@ -130,13 +130,42 @@ const _key='$2a$10$dPDqRz.3B/hquPeYPolzKuJbt9R95Mestu83/kVs6vofgmmoHyoyO';
 const _burl='https://api.jsonbin.io/v3/b/'+_bin;
 let _a=false,_s=0,_p=false,_k=[],_cache={messages:[],pending:[]};
 const $=id=>document.getElementById(id);
-const rainContainer=$('rainContainer'),startOverlay=$('startOverlay'),playBtn=$('playBtn'),songName=$('songName'),nextBtn=$('nextBtn'),volIcon=$('volIcon'),treeHole=$('treeHole'),messagePanel=$('messagePanel'),closePanel=$('closePanel'),nickInput=$('nickInput'),textInput=$('textInput'),submitBtn=$('submitBtn'),messageList=$('messageList'),adminBadge=$('adminBadge'),audio=$('audioPlayer'),quoteText=$('quoteText');
+let SONGS=[];
+const rainContainer=$('rainContainer'),startOverlay=$('startOverlay'),playBtn=$('playBtn'),playIcon=$('playIcon'),songName=$('songName'),nextBtn=$('nextBtn'),volIcon=$('volIcon'),volSvg=$('volSvg'),treeHole=$('treeHole'),messagePanel=$('messagePanel'),closePanel=$('closePanel'),nickInput=$('nickInput'),textInput=$('textInput'),submitBtn=$('submitBtn'),messageList=$('messageList'),adminBadge=$('adminBadge'),audio=$('audioPlayer'),quoteText=$('quoteText');
+const PLAY_PATH='M8 5v14l11-7z';
+const PAUSE_PATH='M6 19h4V5H6v14zm8-14v14h4V5h-4z';
+const VOL_ON_PATH='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z';
+const VOL_OFF_PATH='M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z';
+function _setPlayIcon(playing){playIcon.querySelector('path').setAttribute('d',playing?PAUSE_PATH:PLAY_PATH);}
+function _setVolIcon(muted){volSvg.querySelector('path').setAttribute('d',muted?VOL_OFF_PATH:VOL_ON_PATH);}
+async function _loadSongs(){
+  try{
+    const r=await fetch('https://api.github.com/repos/jianguotongzhi7/jianguotongzhi7.github.io/contents/music');
+    if(!r.ok)throw new Error(r.status);
+    const files=await r.json();
+    SONGS=files.filter(f=>f.name.toLowerCase().endsWith('.mp3')).map(f=>({
+      name:f.name.replace(/\.mp3$/i,''),
+      src:'music/'+f.name
+    }));
+  }catch(e){
+    console.warn('GitHub API 读取失败，尝试 manifest.json',e);
+    try{
+      const r2=await fetch('music/manifest.json');
+      if(!r2.ok)throw new Error(r2.status);
+      SONGS=(await r2.json()).map(s=>({name:s.name,src:'music/'+s.file}));
+    }catch(e2){
+      console.warn('manifest.json 也加载失败',e2);
+      SONGS=[];
+    }
+  }
+}
+await _loadSongs();
 for(let i=0;i<50;i++){const d=document.createElement('div');d.className='drop';d.style.left=Math.random()*100+'%';d.style.animationDuration=(Math.random()*2+1)+'s';d.style.animationDelay=Math.random()*2+'s';rainContainer.appendChild(d);}
-startOverlay.addEventListener('click',()=>{startOverlay.classList.add('hidden');if(!_p){_ls(Math.floor(Math.random()*SONGS.length));audio.volume=0.4;audio.play().then(()=>{_p=true;playBtn.textContent='';treeHole.querySelector('.tree-hole-icon').classList.add('spinning');}).catch(e=>console.log('播放失败:',e));}});
+startOverlay.addEventListener('click',()=>{startOverlay.classList.add('hidden');if(SONGS.length===0){songName.textContent='暂无歌曲';return;}if(!_p){_ls(Math.floor(Math.random()*SONGS.length));audio.volume=0.4;audio.play().then(()=>{_p=true;_setPlayIcon(true);treeHole.querySelector('.tree-hole-icon').classList.add('spinning');}).catch(e=>console.log('播放失败:',e));}});
 function _ls(i){_s=i;audio.src=SONGS[_s].src;songName.textContent=SONGS[_s].name;}
-playBtn.addEventListener('click',()=>{if(_p){audio.pause();playBtn.textContent='▶';treeHole.querySelector('.tree-hole-icon').classList.remove('spinning');}else{audio.play();playBtn.textContent='';treeHole.querySelector('.tree-hole-icon').classList.add('spinning');}_p=!_p;});
+playBtn.addEventListener('click',()=>{if(_p){audio.pause();_setPlayIcon(false);treeHole.querySelector('.tree-hole-icon').classList.remove('spinning');}else{audio.play();_setPlayIcon(true);treeHole.querySelector('.tree-hole-icon').classList.add('spinning');}_p=!_p;});
 nextBtn.addEventListener('click',()=>{_ls((_s+1)%SONGS.length);if(_p)audio.play();});
-volIcon.addEventListener('click',()=>{audio.muted=!audio.muted;volIcon.textContent=audio.muted?'🔇':'';});
+volIcon.addEventListener('click',()=>{audio.muted=!audio.muted;_setVolIcon(audio.muted);});
 audio.addEventListener('ended',()=>{_ls((_s+1)%SONGS.length);if(_p)audio.play();});
 treeHole.addEventListener('click',()=>{messagePanel.classList.add('open');_rm();});
 closePanel.addEventListener('click',()=>{messagePanel.classList.remove('open');});
