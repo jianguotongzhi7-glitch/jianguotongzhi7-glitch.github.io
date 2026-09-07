@@ -139,12 +139,12 @@ const VOL_OFF_PATH='M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-
 function _setPlayIcon(playing){playIcon.querySelector('path').setAttribute('d',playing?PAUSE_PATH:PLAY_PATH);}
 function _setVolIcon(muted){volSvg.querySelector('path').setAttribute('d',muted?VOL_OFF_PATH:VOL_ON_PATH);}
 async function _loadSongs(){
-  // 使用 GitHub API 读取 music 目录（国内可能不稳定，jsdelivr 作为备选）
+
   try{
     const r=await fetch('https://api.github.com/repos/jianguotongzhi7-glitch/jianguotongzhi7-glitch.github.io/contents/music');
     if(!r.ok)throw new Error(r.status);
     const files=await r.json();
-    SONGS=files.filter(f=>f.name.toLowerCase().endsWith('.mp3')).map(f=>({
+    SONGS=files.filter(f=>/\.(mp3|flac|wav|ogg|m4a|aac|wma)$/i.test(f.name)).map(f=>({
       name:f.name.replace(/\.[^.]+$/,''),
       src:'https://cdn.jsdelivr.net/gh/jianguotongzhi7-glitch/jianguotongzhi7-glitch.github.io@main/music/'+encodeURIComponent(f.name)
     }));
@@ -154,7 +154,7 @@ async function _loadSongs(){
       const r2=await fetch('https://cdn.jsdelivr.net/gh/jianguotongzhi7-glitch/jianguotongzhi7-glitch.github.io@main/music/');
       if(!r2.ok)throw new Error(r2.status);
       const html=await r2.text();
-      const matches=[...html.matchAll(/href="([^"]+\.mp3)"/gi)];
+      const matches=[...html.matchAll(/href="([^"]+\.(?:mp3|flac|wav|ogg|m4a|aac|wma))"/gi)];
       SONGS=matches.map(m=>{
         const fname=decodeURIComponent(m[1].split('/').pop());
         return {
